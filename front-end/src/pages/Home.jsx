@@ -1,6 +1,7 @@
 import React from "react";
 import "../css/main.css";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 import iconChat from "../assets/icons/icon-chat.png";
 import iconMoney from "../assets/icons/icon-money.png";
 import iconSecurity from "../assets/icons/icon-security.png";
@@ -8,7 +9,7 @@ import iconSecurity from "../assets/icons/icon-security.png";
 const Home = () => {
   return (
     <React.Fragment>
-      <Header></Header>
+      <Header />
       <main>
         <div className="hero">
           <section className="hero-content">
@@ -50,9 +51,7 @@ const Home = () => {
           </div>
         </section>
       </main>
-      <footer className="footer">
-        <p className="footer-text">Copyright 2020 Argent Bank</p>
-      </footer>
+      <Footer />
     </React.Fragment>
   );
 };

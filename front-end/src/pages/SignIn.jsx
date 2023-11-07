@@ -1,10 +1,11 @@
 import React from "react";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const SignIn = () => {
   return (
     <React.Fragment>
-      <Header></Header>
+      <Header />
       <main className="main bg-dark">
         <section className="sign-in-content">
           <i className="fa fa-user-circle sign-in-icon"></i>
@@ -32,9 +33,7 @@ const SignIn = () => {
           </form>
         </section>
       </main>
-      <footer className="footer">
-        <p className="footer-text">Copyright 2020 Argent Bank</p>
-      </footer>
+      <Footer />
     </React.Fragment>
   );
 };
