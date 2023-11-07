@@ -1,30 +1,14 @@
 import React from "react";
 import "../css/main.css";
-import logo from "../assets/argentBankLogo.png";
+import Header from "../components/Header";
 import iconChat from "../assets/icons/icon-chat.png";
 import iconMoney from "../assets/icons/icon-money.png";
 import iconSecurity from "../assets/icons/icon-security.png";
-import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
     <React.Fragment>
-      <nav className="main-nav">
-        <Link className="main-nav-logo" to={"/"}>
-          <img
-            className="main-nav-logo-image"
-            src={logo}
-            alt="Argent Bank Logo"
-          />
-          <h1 className="sr-only">Argent Bank</h1>
-        </Link>
-        <div>
-          <Link className="main-nav-item" to={"/login"}>
-            <i className="fa fa-user-circle"></i>
-            Sign In
-          </Link>
-        </div>
-      </nav>
+      <Header></Header>
       <main>
         <div className="hero">
           <section className="hero-content">
