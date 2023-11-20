@@ -1,8 +1,17 @@
 import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { useEffect } from "react";
+import { fetchOrUpdateToken } from "../features/token";
+import { useStore } from "react-redux";
 
 const Login = () => {
+  const store = useStore();
+
+  useEffect(() => {
+    fetchOrUpdateToken(store);
+  }, [store]);
+
   return (
     <React.Fragment>
       <Header />
@@ -25,11 +34,11 @@ const Login = () => {
             </div>
 
             {/* PLACEHOLDER DUE TO STATIC SITE */}
-            <a href="./user.html" className="sign-in-button">
-              Sign In
-            </a>
+            {/* <a href="./user.html" className="sign-in-button">
+              Sign In 
+            </a> */}
             {/* SHOULD BE THE BUTTON BELOW */}
-            {/* <button class="sign-in-button">Sign In</button> */}
+            <button className="sign-in-button">Sign In</button>
           </form>
         </section>
       </main>
