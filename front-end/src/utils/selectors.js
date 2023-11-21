@@ -1,1 +1,1 @@
-export const selectToken = (state) => state.authentication;
+export const authenticationSelector = (state) => state.authentication;

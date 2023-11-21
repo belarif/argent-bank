@@ -1,22 +1,34 @@
 import { produce } from "immer";
-import { selectToken } from "../utils/selectors";
+import { authenticationSelector } from "../utils/selectors";
 
 const initialState = {
   status: "void",
   token: null,
   error: null,
+  credentials: {},
 };
 
-const FETCHING = "token/fetching";
-const RESOLVED = "token/resolved";
-const REJECTED = "token/rejected";
+const TOKEN_FETCHING = "token/fetching";
+const TOKEN_RESOLVED = "token/resolved";
+const TOKEN_REJECTED = "token/rejected";
+const CREDENTIALS_RETRIEVING = "credentials/retrieve";
+const CREDENTIALS_VOID = "credentials/void";
 
-const tokenFetching = () => ({ type: FETCHING });
-const tokenResolving = (token) => ({ type: RESOLVED, payload: token });
-const tokenRejecting = (error) => ({ type: REJECTED, payload: error });
+const tokenFetching = () => ({ type: TOKEN_FETCHING });
+const tokenResolving = (token) => ({ type: TOKEN_RESOLVED, payload: token });
+const tokenRejecting = (error) => ({ type: TOKEN_REJECTED, payload: error });
+const credentialsRetrieving = (credentials) => ({
+  type: CREDENTIALS_RETRIEVING,
+  payload: credentials,
+});
+const credentialsVoid = (credentials) => ({
+  type: CREDENTIALS_VOID,
+  payload: credentials,
+});
 
-export async function fetchOrUpdateToken(store) {
-  const status = selectToken(store.getState()).status;
+async function fetchOrUpdateToken(store) {
+  const status = authenticationSelector(store.getState()).status;
+  const credentials = authenticationSelector(store.getState()).credentials;
 
   if (status === "pending" || status === "updating") {
     return;
@@ -25,18 +37,21 @@ export async function fetchOrUpdateToken(store) {
   store.dispatch(tokenFetching());
 
   try {
-    const dataUser = {
-      email: "tony@stark.com",
-      password: "password123",
-    };
-
     const response = await fetch("http://localhost:3001/api/v1/user/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(dataUser),
+      body: JSON.stringify(credentials),
     });
+
+    if (response.status === 400) {
+      store.dispatch(tokenRejecting("champs invalides"));
+    }
+
+    if (response.status === 500) {
+      store.dispatch(tokenRejecting("Erreur interne du serveur"));
+    }
 
     const data = await response.json();
     store.dispatch(tokenResolving(data.body.token));
@@ -46,10 +61,10 @@ export async function fetchOrUpdateToken(store) {
   }
 }
 
-export default function tokenReducer(state = initialState, action) {
+function authenticationReducer(state = initialState, action) {
   return produce(state, (draft) => {
     switch (action.type) {
-      case FETCHING: {
+      case TOKEN_FETCHING: {
         if (draft.status === "void") {
           draft.status = "pending";
           return;
@@ -69,7 +84,7 @@ export default function tokenReducer(state = initialState, action) {
         return;
       }
 
-      case RESOLVED: {
+      case TOKEN_RESOLVED: {
         if (draft.status === "pending" || draft.status === "updating") {
           draft.token = action.payload;
           draft.status = "resolved";
@@ -78,7 +93,7 @@ export default function tokenReducer(state = initialState, action) {
         return;
       }
 
-      case REJECTED: {
+      case TOKEN_REJECTED: {
         if (draft.status === "pending" || draft.status === "updating") {
           draft.status = "rejected";
           draft.error = action.payload;
@@ -88,8 +103,37 @@ export default function tokenReducer(state = initialState, action) {
         return;
       }
 
+      case CREDENTIALS_RETRIEVING: {
+        draft.credentials = action.payload;
+        return;
+      }
+
+      case CREDENTIALS_VOID: {
+        draft.credentials = action.payload;
+        return;
+      }
+
       default:
         return;
     }
   });
 }
+
+function getFormData(store, e) {
+  const formDataCredentials = {
+    email: e.target.username.value,
+    password: e.target.password.value,
+  };
+
+  try {
+    if (!formDataCredentials.email || !formDataCredentials.password) {
+      store.dispatch(credentialsVoid({}));
+      return;
+    }
+    store.dispatch(credentialsRetrieving(formDataCredentials));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export { fetchOrUpdateToken, authenticationReducer, getFormData };

@@ -1,9 +1,9 @@
-import tokenReducer from "../features/token.js";
+import { authenticationReducer } from "../features/token.js";
 import { combineReducers } from "redux";
 import { legacy_createStore as createStore } from "redux";
 
 const reducer = combineReducers({
-  authentication: tokenReducer,
+  authentication: authenticationReducer,
 });
 
 const reduxDevtools =

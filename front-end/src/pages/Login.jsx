@@ -1,16 +1,17 @@
 import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { useEffect } from "react";
-import { fetchOrUpdateToken } from "../features/token";
+import { fetchOrUpdateToken, getFormData } from "../features/token";
 import { useStore } from "react-redux";
 
 const Login = () => {
   const store = useStore();
 
-  useEffect(() => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    getFormData(store, e);
     fetchOrUpdateToken(store);
-  }, [store]);
+  };
 
   return (
     <React.Fragment>
@@ -19,7 +20,7 @@ const Login = () => {
         <section className="sign-in-content">
           <i className="fa fa-user-circle sign-in-icon"></i>
           <h1>Sign In</h1>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="input-wrapper">
               <label htmlFor="username">Username</label>
               <input type="text" id="username" />
@@ -32,12 +33,6 @@ const Login = () => {
               <input type="checkbox" id="remember-me" />
               <label htmlFor="remember-me">Remember me</label>
             </div>
-
-            {/* PLACEHOLDER DUE TO STATIC SITE */}
-            {/* <a href="./user.html" className="sign-in-button">
-              Sign In 
-            </a> */}
-            {/* SHOULD BE THE BUTTON BELOW */}
             <button className="sign-in-button">Sign In</button>
           </form>
         </section>
