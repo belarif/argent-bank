@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { fetchOrUpdateToken, getFormData } from "../features/token";
+import { fetchOrUpdateToken, setCredentials } from "../features/token";
 import { useStore } from "react-redux";
 
 const Login = () => {
@@ -9,7 +9,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    getFormData(store, e);
+    setCredentials(store, e);
     fetchOrUpdateToken(store);
   };
 

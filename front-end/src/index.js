@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import { Provider } from "react-redux";
-import { store } from "./utils/store";
+import store from "./utils/store";
 
 const router = createBrowserRouter([
   {

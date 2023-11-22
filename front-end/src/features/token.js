@@ -5,7 +5,7 @@ const initialState = {
   status: "void",
   token: null,
   error: null,
-  credentials: {},
+  credentials: null,
 };
 
 const TOKEN_FETCHING = "token/fetching";
@@ -53,8 +53,12 @@ async function fetchOrUpdateToken(store) {
       store.dispatch(tokenRejecting("Erreur interne du serveur"));
     }
 
-    const data = await response.json();
-    store.dispatch(tokenResolving(data.body.token));
+    if (response.ok) {
+      const data = await response.json();
+      store.dispatch(tokenResolving(data.body.token));
+    }
+
+    return;
   } catch (error) {
     console.log(error);
     store.dispatch(tokenRejecting(error));
@@ -119,7 +123,7 @@ function authenticationReducer(state = initialState, action) {
   });
 }
 
-function getFormData(store, e) {
+function setCredentials(store, e) {
   const formDataCredentials = {
     email: e.target.username.value,
     password: e.target.password.value,
@@ -127,7 +131,7 @@ function getFormData(store, e) {
 
   try {
     if (!formDataCredentials.email || !formDataCredentials.password) {
-      store.dispatch(credentialsVoid({}));
+      store.dispatch(credentialsVoid(null));
       return;
     }
     store.dispatch(credentialsRetrieving(formDataCredentials));
@@ -136,4 +140,4 @@ function getFormData(store, e) {
   }
 }
 
-export { fetchOrUpdateToken, authenticationReducer, getFormData };
+export { fetchOrUpdateToken, authenticationReducer, setCredentials };
