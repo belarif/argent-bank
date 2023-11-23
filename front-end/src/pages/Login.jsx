@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { fetchOrUpdateToken, setCredentials } from "../features/token";
+import { fetchOrUpdateToken, setCredentials } from "../features/authentication";
 import { useStore } from "react-redux";
 
 const Login = () => {
