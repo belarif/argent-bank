@@ -1,4 +1,5 @@
 import { produce } from "immer";
+import { createAction } from "@reduxjs/toolkit";
 import { authenticationSelector } from "../utils/selectors";
 
 const initialState = {
@@ -8,23 +9,22 @@ const initialState = {
   credentials: null,
 };
 
-const TOKEN_FETCHING = "token/fetching";
-const TOKEN_RESOLVED = "token/resolved";
-const TOKEN_REJECTED = "token/rejected";
-const CREDENTIALS_RETRIEVING = "credentials/retrieve";
-const CREDENTIALS_VOID = "credentials/void";
-
-const tokenFetching = () => ({ type: TOKEN_FETCHING });
-const tokenResolving = (token) => ({ type: TOKEN_RESOLVED, payload: token });
-const tokenRejecting = (error) => ({ type: TOKEN_REJECTED, payload: error });
-const credentialsRetrieving = (credentials) => ({
-  type: CREDENTIALS_RETRIEVING,
-  payload: credentials,
-});
-const credentialsVoid = (credentials) => ({
-  type: CREDENTIALS_VOID,
-  payload: credentials,
-});
+// actions creators
+export const tokenFetching = createAction("token/fetching");
+export const tokenResolving = createAction("token/resolved");
+export const tokenRejecting = createAction("token/rejected");
+export const credentialsRetrieving = createAction(
+  "credentials/retrieve",
+  (email, password) => {
+    return {
+      payload: {
+        email,
+        password,
+      },
+    };
+  }
+);
+export const credentialsVoid = createAction("credentials/void");
 
 async function fetchOrUpdateToken(store) {
   const status = authenticationSelector(store.getState()).status;
@@ -68,7 +68,7 @@ async function fetchOrUpdateToken(store) {
 function authenticationReducer(state = initialState, action) {
   return produce(state, (draft) => {
     switch (action.type) {
-      case TOKEN_FETCHING: {
+      case tokenFetching.toString(): {
         if (draft.status === "void") {
           draft.status = "pending";
           return;
@@ -88,7 +88,7 @@ function authenticationReducer(state = initialState, action) {
         return;
       }
 
-      case TOKEN_RESOLVED: {
+      case tokenResolving.toString(): {
         if (draft.status === "pending" || draft.status === "updating") {
           draft.token = action.payload;
           draft.status = "resolved";
@@ -97,7 +97,7 @@ function authenticationReducer(state = initialState, action) {
         return;
       }
 
-      case TOKEN_REJECTED: {
+      case tokenRejecting.toString(): {
         if (draft.status === "pending" || draft.status === "updating") {
           draft.status = "rejected";
           draft.error = action.payload;
@@ -107,12 +107,12 @@ function authenticationReducer(state = initialState, action) {
         return;
       }
 
-      case CREDENTIALS_RETRIEVING: {
+      case credentialsRetrieving.toString(): {
         draft.credentials = action.payload;
         return;
       }
 
-      case CREDENTIALS_VOID: {
+      case credentialsVoid.toString(): {
         draft.credentials = action.payload;
         return;
       }
@@ -124,17 +124,16 @@ function authenticationReducer(state = initialState, action) {
 }
 
 function setCredentials(store, e) {
-  const formDataCredentials = {
-    email: e.target.username.value,
-    password: e.target.password.value,
-  };
+  const email = e.target.username.value;
+  const password = e.target.password.value;
 
   try {
-    if (!formDataCredentials.email || !formDataCredentials.password) {
+    // ajout : vérifier d'abord si le token est généré avant d'enregistrer les credentials
+    if (!email || !password) {
       store.dispatch(credentialsVoid(null));
       return;
     }
-    store.dispatch(credentialsRetrieving(formDataCredentials));
+    store.dispatch(credentialsRetrieving(email, password));
   } catch (error) {
     console.log(error);
   }
