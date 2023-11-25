@@ -1,39 +1,72 @@
-import { createAction, createReducer } from "@reduxjs/toolkit";
-import { authenticationSelector } from "../utils/selectors";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   status: "void",
   token: null,
   error: null,
-  credentials: null,
+  credentials: {},
 };
 
-// actions creators
-export const tokenFetching = createAction("token/fetching");
-export const tokenResolving = createAction("token/resolved");
-export const tokenRejecting = createAction("token/rejected");
-export const credentialsRetrieving = createAction(
-  "credentials/retrieve",
-  (email, password) => {
-    return {
-      payload: {
-        email,
-        password,
+const authenticationSlice = createSlice({
+  name: "authentication",
+  initialState,
+  reducers: {
+    fetching: (state) => {
+      if (state.status === "void") {
+        state.status = "pending";
+        return;
+      }
+
+      if (state.status === "rejected") {
+        state.error = null;
+        state.status = "pending";
+        return;
+      }
+
+      if (state.status === "resolved") {
+        state.status = "updating";
+        return;
+      }
+    },
+
+    resolving: {
+      prepare: (email, password, token) => ({
+        payload: { email, password, token },
+      }),
+
+      reducer: (state, action) => {
+        if (state.status === "pending" || state.status === "updating") {
+          state.status = "resolved";
+          state.token = action.payload.token;
+          state.credentials.email = action.payload.email;
+          state.credentials.password = action.payload.password;
+          return;
+        }
       },
-    };
-  }
-);
-export const credentialsVoid = createAction("credentials/void");
+    },
 
-export async function fetchOrUpdateToken(store) {
-  const status = authenticationSelector(store.getState()).status;
-  const credentials = authenticationSelector(store.getState()).credentials;
+    rejecting: (state, action) => {
+      if (state.status === "pending" || state.status === "updating") {
+        state.status = "rejected";
+        state.error = action.payload;
+        state.token = null;
+        return;
+      }
+    },
+  },
+});
 
+export async function fetchOrUpdateToken(dispatch, status, email, password) {
   if (status === "pending" || status === "updating") {
     return;
   }
 
-  store.dispatch(tokenFetching());
+  const credentials = {
+    email: email,
+    password: password,
+  };
+
+  dispatch(fetching());
 
   try {
     const response = await fetch("http://localhost:3001/api/v1/user/login", {
@@ -44,83 +77,26 @@ export async function fetchOrUpdateToken(store) {
       body: JSON.stringify(credentials),
     });
 
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(resolving(email, password, data.body.token));
+    }
+
     if (response.status === 400) {
-      store.dispatch(tokenRejecting("champs invalides"));
+      dispatch(rejecting("champs invalides"));
     }
 
     if (response.status === 500) {
-      store.dispatch(tokenRejecting("Erreur interne du serveur"));
-    }
-
-    if (response.ok) {
-      const data = await response.json();
-      store.dispatch(tokenResolving(data.body.token));
+      dispatch(rejecting("Erreur interne du serveur"));
     }
 
     return;
   } catch (error) {
     console.log(error);
-    store.dispatch(tokenRejecting(error));
+    dispatch(rejecting(error));
   }
 }
 
-// reducer
-export default createReducer(initialState, (builder) => {
-  return builder
-    .addCase(tokenFetching, (draft) => {
-      if (draft.status === "void") {
-        draft.status = "pending";
-        return;
-      }
-
-      if (draft.status === "rejected") {
-        draft.error = null;
-        draft.status = "pending";
-        return;
-      }
-
-      if (draft.status === "resolved") {
-        draft.status = "updating";
-        return;
-      }
-    })
-    .addCase(tokenResolving, (draft, action) => {
-      if (draft.status === "pending" || draft.status === "updating") {
-        draft.token = action.payload;
-        draft.status = "resolved";
-        return;
-      }
-    })
-    .addCase(tokenRejecting, (draft, action) => {
-      if (draft.status === "pending" || draft.status === "updating") {
-        draft.status = "rejected";
-        draft.error = action.payload;
-        draft.token = null;
-        return;
-      }
-    })
-    .addCase(credentialsRetrieving, (draft, action) => {
-      draft.credentials = action.payload;
-      return;
-    })
-    .addCase(credentialsVoid, (draft, action) => {
-      draft.credentials = action.payload;
-      return;
-    });
-});
-
-export function setCredentials(store, e) {
-  const email = e.target.username.value;
-  const password = e.target.password.value;
-
-  try {
-    // ajout : vérifier d'abord si le token est généré avant d'enregistrer les credentials
-    if (!email || !password) {
-      store.dispatch(credentialsVoid(null));
-      return;
-    }
-    store.dispatch(credentialsRetrieving(email, password));
-  } catch (error) {
-    console.log(error);
-  }
-}
+const { actions, reducer } = authenticationSlice;
+export const { fetching, resolving, rejecting } = actions;
+export default reducer;

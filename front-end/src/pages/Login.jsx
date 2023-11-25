@@ -1,16 +1,19 @@
 import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { fetchOrUpdateToken, setCredentials } from "../features/authentication";
-import { useStore } from "react-redux";
+import { fetchOrUpdateToken } from "../features/authentication";
+import { useDispatch, useSelector } from "react-redux";
+import { authenticationSelector } from "../utils/selectors";
 
 const Login = () => {
-  const store = useStore();
+  const dispatch = useDispatch();
+  const status = useSelector(authenticationSelector).status;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setCredentials(store, e);
-    fetchOrUpdateToken(store);
+    const email = e.target.username.value;
+    const password = e.target.password.value;
+    fetchOrUpdateToken(dispatch, status, email, password);
   };
 
   return (
