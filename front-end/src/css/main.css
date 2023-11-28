@@ -51,6 +51,11 @@ body {
   color: #42b983;
 }
 
+.main-nav-items {
+  display: flex;
+  gap: 30px;
+}
+
 .main-nav-item {
   text-decoration: none;
   margin-right: 0.5rem;
@@ -165,7 +170,12 @@ body {
   color: #fff;
 }
 
-.sign-in-content {
+.sign-up-link {
+  margin-top: 1rem;
+}
+
+.sign-in-content,
+.sign-up-content {
   box-sizing: border-box;
   background-color: white;
   width: 300px;

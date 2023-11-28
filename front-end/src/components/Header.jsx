@@ -13,9 +13,9 @@ const Header = ({ token }) => {
         />
         <h1 className="sr-only">Argent Bank</h1>
       </Link>
-      <div>
+      <div className="main-nav-items">
         {token && token !== null ? (
-          <Link className="main-nav-item" to={"/logout"}>
+          <Link className="main-nav-item" to={"/"}>
             <i className="fa fa-user-circle"></i>
             Sign Out
           </Link>
@@ -25,6 +25,10 @@ const Header = ({ token }) => {
             Sign In
           </Link>
         )}
+        <Link className="main-nav-item" to={"/signUp"}>
+          <i className="fa fa-user-circle"></i>
+          Sign Up
+        </Link>
       </div>
     </nav>
   );
