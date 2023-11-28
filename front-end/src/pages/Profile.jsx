@@ -1,18 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { loginSelector } from "../utils/selectors";
+import { useSelector } from "react-redux";
+import { fetchUserProfile } from "../features/profile";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
+  const [userProfile, setUserProfile] = useState({});
+  const navigate = useNavigate();
+  const token = useSelector(loginSelector).token;
+
+  useEffect(() => {
+    try {
+      const getUserProfile = async () => {
+        const res = await fetchUserProfile(token);
+        setUserProfile(res.body);
+      };
+
+      getUserProfile();
+      if (token === null) {
+        navigate("/login");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [token, navigate]);
+
   return (
     <React.Fragment>
-      <Header />
+      <Header token={token} />
       <main className="main bg-dark">
         <div className="header">
-          <h1>
-            Welcome back
-            <br />
-            Tony Jarvis!
-          </h1>
+          {userProfile && (
+            <h1>
+              Welcome back
+              <br />
+              {userProfile.firstName} {userProfile.lastName}
+            </h1>
+          )}
           <button className="edit-button">Edit Name</button>
         </div>
         <h2 className="sr-only">Accounts</h2>

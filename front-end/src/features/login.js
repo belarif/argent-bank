@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { loginSelector } from "../utils/selectors";
 
 const initialState = {
   status: "void",
@@ -7,8 +8,8 @@ const initialState = {
   credentials: {},
 };
 
-const authenticationSlice = createSlice({
-  name: "authentication",
+const { actions, reducer } = createSlice({
+  name: "login",
   initialState,
   reducers: {
     fetching: (state) => {
@@ -56,47 +57,47 @@ const authenticationSlice = createSlice({
   },
 });
 
-export async function fetchOrUpdateToken(dispatch, status, email, password) {
-  if (status === "pending" || status === "updating") {
-    return;
-  }
+export function fetchOrUpdateToken(email, password) {
+  return async (dispatch, getState) => {
+    const status = loginSelector(getState()).status;
 
-  const credentials = {
-    email: email,
-    password: password,
+    if (status === "pending" || status === "updating") {
+      return;
+    }
+
+    dispatch(actions.fetching());
+
+    try {
+      const response = await fetch("http://localhost:3001/api/v1/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        dispatch(actions.resolving(email, password, data.body.token));
+      }
+
+      if (response.status === 400) {
+        dispatch(actions.rejecting("champs invalides"));
+      }
+
+      if (response.status === 500) {
+        dispatch(actions.rejecting("Erreur interne du serveur"));
+      }
+
+      return;
+    } catch (error) {
+      console.log(error);
+      dispatch(actions.rejecting(error));
+    }
   };
-
-  dispatch(fetching());
-
-  try {
-    const response = await fetch("http://localhost:3001/api/v1/user/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(credentials),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      dispatch(resolving(email, password, data.body.token));
-    }
-
-    if (response.status === 400) {
-      dispatch(rejecting("champs invalides"));
-    }
-
-    if (response.status === 500) {
-      dispatch(rejecting("Erreur interne du serveur"));
-    }
-
-    return;
-  } catch (error) {
-    console.log(error);
-    dispatch(rejecting(error));
-  }
 }
 
-const { actions, reducer } = authenticationSlice;
-export const { fetching, resolving, rejecting } = actions;
 export default reducer;
