@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { EditForm } from "../components/EditForm";
 import { loginSelector } from "../utils/selectors";
 import { useSelector } from "react-redux";
 import { fetchUserProfile } from "../features/profile";
@@ -39,7 +40,7 @@ const Profile = () => {
               {userProfile.firstName} {userProfile.lastName}
             </h1>
           )}
-          <button className="edit-button">Edit Name</button>
+          <EditForm />
         </div>
         <h2 className="sr-only">Accounts</h2>
         <section className="account">
