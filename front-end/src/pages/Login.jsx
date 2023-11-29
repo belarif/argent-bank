@@ -40,10 +40,12 @@ const Login = () => {
           <form onSubmit={handleSubmit}>
             <div className="input-wrapper">
               <label htmlFor="username">Username</label>
-              <input type="text" id="username" />
+              <input type="email" id="username" required />
             </div>
             <div className="input-wrapper">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password" required>
+                Password
+              </label>
               <input type="password" id="password" />
             </div>
             <div className="input-remember">

@@ -54,6 +54,15 @@ const { actions, reducer } = createSlice({
         return;
       }
     },
+
+    logouting: (state) => {
+      if (state.status === "resolved") {
+        state.status = initialState.status;
+        state.token = initialState.token;
+        state.error = initialState.error;
+        state.credentials = {};
+      }
+    },
   },
 });
 
@@ -97,6 +106,12 @@ export function fetchOrUpdateToken(email, password) {
       console.log(error);
       dispatch(actions.rejecting(error));
     }
+  };
+}
+
+export function logoutProfile() {
+  return async (dispatch) => {
+    dispatch(actions.logouting());
   };
 }
 
