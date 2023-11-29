@@ -20,6 +20,8 @@ export const EditForm = () => {
         e.target.lastName.value
       )
     );
+    e.target.firstName.value = "";
+    e.target.lastName.value = "";
   };
 
   return displayed ? (
@@ -35,8 +37,12 @@ export const EditForm = () => {
         <input type="text" placeholder="First name" name="firstName" />
         <input type="text" placeholder="Last name" name="lastName" />
         <br />
-        <button className="save-button">Save</button>
-        <button className="cancel-button">Cancel</button>
+        <button type="submit" className="save-button">
+          Save
+        </button>
+        <button type="reset" className="cancel-button">
+          Cancel
+        </button>
       </form>
     </div>
   ) : (
