@@ -3,14 +3,14 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { signupUser } from "../features/signup";
 import { useDispatch, useSelector } from "react-redux";
-import { signupSelector } from "../utils/selectors";
+import { userSelector } from "../utils/selectors";
 import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const error = useSelector(signupSelector).error;
-  const success = useSelector(signupSelector).success;
+  const error = useSelector(userSelector).error;
+  const success = useSelector(userSelector).success;
 
   useEffect(() => {
     if (success !== null) {

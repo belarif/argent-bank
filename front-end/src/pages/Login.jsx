@@ -2,9 +2,9 @@ import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
-import { fetchOrUpdateToken } from "../features/login";
+import { fetchToken } from "../features/login";
 import { useDispatch, useSelector } from "react-redux";
-import { loginSelector, signupSelector } from "../utils/selectors";
+import { loginSelector, userSelector } from "../utils/selectors";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -13,7 +13,7 @@ const Login = () => {
   const navigate = useNavigate();
   const token = useSelector(loginSelector).token;
   const error = useSelector(loginSelector).error;
-  const success = useSelector(signupSelector).success;
+  const success = useSelector(userSelector).success;
 
   useEffect(() => {
     if (token !== null) {
@@ -23,9 +23,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(
-      fetchOrUpdateToken(e.target.username.value, e.target.password.value)
-    );
+    dispatch(fetchToken(e.target.username.value, e.target.password.value));
   };
 
   return (

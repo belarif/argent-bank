@@ -66,7 +66,7 @@ const { actions, reducer } = createSlice({
   },
 });
 
-export function fetchOrUpdateToken(email, password) {
+export function fetchToken(email, password) {
   return async (dispatch, getState) => {
     const status = loginSelector(getState()).status;
 
