@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { updateProfile } from "../features/signup";
+import { updateUser } from "../features/user";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { loginSelector } from "../utils/selectors";
@@ -13,7 +13,7 @@ export const EditForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(
-      updateProfile(
+      updateUser(
         credentials.email,
         credentials.password,
         e.target.firstName.value,

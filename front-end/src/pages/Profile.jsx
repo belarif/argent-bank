@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import { EditForm } from "../components/EditForm";
 import { loginSelector } from "../utils/selectors";
 import { useSelector } from "react-redux";
-import { fetchUserProfile } from "../features/profile";
+import { getUser } from "../features/user";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
@@ -15,7 +15,7 @@ const Profile = () => {
   useEffect(() => {
     try {
       const getUserProfile = async () => {
-        const res = await fetchUserProfile(token);
+        const res = await getUser(token);
         setUserProfile(res.body);
       };
 

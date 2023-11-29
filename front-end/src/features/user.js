@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { userSelector } from "../utils/selectors";
-import { loginSelector } from "../utils/selectors";
+import { userSelector, loginSelector } from "../utils/selectors";
 
 const initialState = {
   status: "void",
@@ -125,7 +124,7 @@ export function signupUser(email, password, firstName, lastName) {
   };
 }
 
-export function updateProfile(email, password, firstName, lastName) {
+export function updateUser(email, password, firstName, lastName) {
   return async (dispatch, getState) => {
     const token = loginSelector(getState()).token;
     const status = userSelector(getState()).status;
@@ -133,7 +132,6 @@ export function updateProfile(email, password, firstName, lastName) {
     if (status === "pending" || status === "updating") {
       return;
     }
-
     dispatch(actions.fetching());
 
     try {
@@ -162,4 +160,21 @@ export function updateProfile(email, password, firstName, lastName) {
       console.log(error);
     }
   };
+}
+
+export async function getUser(token) {
+  try {
+    const req = await fetch("http://localhost:3001/api/v1/user/profile", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const res = await req.json();
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
 }

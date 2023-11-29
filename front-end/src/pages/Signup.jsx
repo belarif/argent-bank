@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { signupUser } from "../features/signup";
+import { signupUser } from "../features/user";
 import { useDispatch, useSelector } from "react-redux";
 import { userSelector } from "../utils/selectors";
 import { useNavigate } from "react-router-dom";
