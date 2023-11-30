@@ -5,7 +5,6 @@ const initialState = {
   status: "void",
   token: null,
   error: null,
-  credentials: {},
 };
 
 const { actions, reducer } = createSlice({
@@ -31,16 +30,14 @@ const { actions, reducer } = createSlice({
     },
 
     resolving: {
-      prepare: (email, password, token) => ({
-        payload: { email, password, token },
+      prepare: (token) => ({
+        payload: { token },
       }),
 
       reducer: (state, action) => {
         if (state.status === "pending" || state.status === "updating") {
           state.status = "resolved";
           state.token = action.payload.token;
-          state.credentials.email = action.payload.email;
-          state.credentials.password = action.payload.password;
           return;
         }
       },
@@ -60,7 +57,6 @@ const { actions, reducer } = createSlice({
         state.status = initialState.status;
         state.token = initialState.token;
         state.error = initialState.error;
-        state.credentials = {};
       }
     },
   },
@@ -90,7 +86,7 @@ export function getToken(email, password) {
 
       if (response.ok) {
         const data = await response.json();
-        dispatch(actions.resolving(email, password, data.body.token));
+        dispatch(actions.resolving(data.body.token));
       }
 
       if (response.status === 400) {
