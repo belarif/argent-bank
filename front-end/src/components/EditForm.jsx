@@ -10,14 +10,7 @@ const EditForm = ({ userProfile }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(
-      updateUser(
-        userProfile.email,
-        userProfile.password,
-        e.target.firstName.value,
-        e.target.lastName.value
-      )
-    );
+    dispatch(updateUser(e.target.firstName.value, e.target.lastName.value));
     e.target.firstName.value = "";
     e.target.lastName.value = "";
   };

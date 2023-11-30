@@ -2,7 +2,7 @@ import React from "react";
 import logo from "../assets/argentBankLogo.png";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { logoutProfile } from "../features/login";
+import { logout } from "../features/login";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -11,7 +11,7 @@ const Header = ({ token }) => {
   const navigate = useNavigate();
 
   function handleClick() {
-    dispatch(logoutProfile());
+    dispatch(logout());
     navigate("/");
   }
 

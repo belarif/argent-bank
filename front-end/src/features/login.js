@@ -66,7 +66,7 @@ const { actions, reducer } = createSlice({
   },
 });
 
-export function fetchToken(email, password) {
+export function getToken(email, password) {
   return async (dispatch, getState) => {
     const status = loginSelector(getState()).status;
 
@@ -109,7 +109,7 @@ export function fetchToken(email, password) {
   };
 }
 
-export function logoutProfile() {
+export function logout() {
   return async (dispatch) => {
     dispatch(actions.logouting());
   };

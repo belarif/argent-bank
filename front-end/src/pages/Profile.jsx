@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import EditForm from "../components/EditForm";
 import { loginSelector, userSelector } from "../utils/selectors";
 import { useSelector } from "react-redux";
-import { fetchUser } from "../features/user";
+import { getUser } from "../features/user";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
@@ -13,13 +13,13 @@ const Profile = () => {
   const dispatch = useDispatch();
   const token = useSelector(loginSelector).token;
   const userProfile = useSelector(userSelector).userData;
-  console.log(userProfile);
+
   useEffect(() => {
     if (token === null) {
       navigate("/login");
     }
 
-    dispatch(fetchUser(token));
+    dispatch(getUser(token));
   }, [dispatch, navigate, token]);
 
   return (

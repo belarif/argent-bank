@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
-import { fetchToken } from "../features/login";
+import { getToken } from "../features/login";
 import { useDispatch, useSelector } from "react-redux";
 import { loginSelector, userSelector } from "../utils/selectors";
 import { useNavigate } from "react-router-dom";
@@ -23,7 +23,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(fetchToken(e.target.username.value, e.target.password.value));
+    dispatch(getToken(e.target.username.value, e.target.password.value));
   };
 
   return (
