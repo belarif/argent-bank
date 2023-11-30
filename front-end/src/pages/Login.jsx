@@ -28,7 +28,7 @@ const Login = () => {
 
   return (
     <React.Fragment>
-      <Header />
+      <Header token={token} />
       <main className="main bg-dark">
         <section className="sign-in-content">
           <i className="fa fa-user-circle sign-in-icon"></i>

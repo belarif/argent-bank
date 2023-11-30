@@ -1,32 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { EditForm } from "../components/EditForm";
-import { loginSelector } from "../utils/selectors";
+import EditForm from "../components/EditForm";
+import { loginSelector, userSelector } from "../utils/selectors";
 import { useSelector } from "react-redux";
 import { fetchUser } from "../features/user";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const Profile = () => {
-  const [userProfile, setUserProfile] = useState({});
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const token = useSelector(loginSelector).token;
-
+  const userProfile = useSelector(userSelector).userData;
+  console.log(userProfile);
   useEffect(() => {
-    try {
-      const getUserProfile = async () => {
-        const res = await fetchUser(token);
-        setUserProfile(res.body);
-      };
-
-      getUserProfile();
-      if (token === null) {
-        navigate("/login");
-      }
-    } catch (error) {
-      console.log(error);
+    if (token === null) {
+      navigate("/login");
     }
-  }, [token, navigate]);
+
+    dispatch(fetchUser(token));
+  }, [dispatch, navigate, token]);
 
   return (
     <React.Fragment>
@@ -40,7 +34,7 @@ const Profile = () => {
               {userProfile.firstName} {userProfile.lastName}
             </h1>
           )}
-          <EditForm />
+          <EditForm userProfile={userProfile} />
         </div>
         <h2 className="sr-only">Accounts</h2>
         <section className="account">

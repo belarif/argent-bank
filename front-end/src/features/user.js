@@ -31,19 +31,15 @@ const { actions, reducer } = createSlice({
     },
 
     resolving: {
-      prepare: (success, email, password, firstName, lastName) => ({
-        payload: { success, email, password, firstName, lastName },
+      prepare: (success, userData) => ({
+        payload: { success, userData },
       }),
 
       reducer: (state, action) => {
         if (state.status === "pending" || state.status === "updating") {
           state.status = "resolved";
           state.success = action.payload.success;
-          state.userData.email = action.payload.email;
-          state.userData.password = action.payload.password;
-          state.userData.firstName = action.payload.firstName;
-          state.userData.lastName = action.payload.lastName;
-
+          state.userData = action.payload.userData;
           return;
         }
       },
@@ -109,12 +105,10 @@ export function signupUser(email, password, firstName, lastName) {
       }
 
       if (res.status === 200) {
-        dispatch(
-          actions.resolving(res.message, email, password, firstName, lastName)
-        );
+        dispatch(actions.resolving(res.message, res.body));
       }
 
-      return res;
+      return;
     } catch (error) {
       console.log(error);
       dispatch(actions.rejecting(error));
@@ -161,21 +155,40 @@ export function updateUser(email, password, firstName, lastName) {
   };
 }
 
-export async function fetchUser(token) {
-  try {
-    const req = await fetch("http://localhost:3001/api/v1/user/profile", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+export function fetchUser(token) {
+  return async (dispatch, getState) => {
+    const status = userSelector(getState()).status;
 
-    const res = await req.json();
-    return res;
-  } catch (error) {
-    console.log(error);
-  }
+    if (status === "pending" || status === "updating") {
+      return;
+    }
+
+    dispatch(actions.fetching());
+
+    try {
+      const req = await fetch("http://localhost:3001/api/v1/user/profile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const res = await req.json();
+
+      if (res.status === 200) {
+        dispatch(actions.resolving(res.message, res.body));
+      }
+
+      if (res.status === 400) {
+        dispatch(actions.rejecting(res.message));
+      }
+
+      return;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 }
 
 export default reducer;

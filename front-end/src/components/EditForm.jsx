@@ -34,12 +34,12 @@ const EditForm = ({ userProfile }) => {
       >
         <input
           type="text"
-          defaultValue={userProfile.firstName}
+          defaultValue={userProfile && userProfile.firstName}
           name="firstName"
         />
         <input
           type="text"
-          defaultValue={userProfile.lastName}
+          defaultValue={userProfile && userProfile.lastName}
           name="lastName"
         />
         <br />
