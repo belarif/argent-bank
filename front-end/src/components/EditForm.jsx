@@ -2,20 +2,18 @@ import React from "react";
 import { useState } from "react";
 import { updateUser } from "../features/user";
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { loginSelector } from "../utils/selectors";
+import PropTypes from "prop-types";
 
-export const EditForm = () => {
+const EditForm = ({ userProfile }) => {
   const [displayed, setDisplayed] = useState(false);
   const dispatch = useDispatch();
-  const credentials = useSelector(loginSelector).credentials;
 
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(
       updateUser(
-        credentials.email,
-        credentials.password,
+        userProfile.email,
+        userProfile.password,
         e.target.firstName.value,
         e.target.lastName.value
       )
@@ -34,8 +32,16 @@ export const EditForm = () => {
         style={{ display: "block" }}
         onSubmit={handleSubmit}
       >
-        <input type="text" placeholder="First name" name="firstName" />
-        <input type="text" placeholder="Last name" name="lastName" />
+        <input
+          type="text"
+          defaultValue={userProfile.firstName}
+          name="firstName"
+        />
+        <input
+          type="text"
+          defaultValue={userProfile.lastName}
+          name="lastName"
+        />
         <br />
         <button type="submit" className="save-button">
           Save
@@ -51,3 +57,9 @@ export const EditForm = () => {
     </button>
   );
 };
+
+EditForm.propTypes = {
+  userProfile: PropTypes.object,
+};
+
+export default EditForm;
