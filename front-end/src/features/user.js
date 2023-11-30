@@ -78,8 +78,6 @@ const { actions, reducer } = createSlice({
   },
 });
 
-export default reducer;
-
 export function signupUser(email, password, firstName, lastName) {
   return async (dispatch, getState) => {
     const status = userSelector(getState()).status;
@@ -158,11 +156,12 @@ export function updateUser(email, password, firstName, lastName) {
       return res;
     } catch (error) {
       console.log(error);
+      dispatch(actions.rejecting(error));
     }
   };
 }
 
-export async function getUser(token) {
+export async function fetchUser(token) {
   try {
     const req = await fetch("http://localhost:3001/api/v1/user/profile", {
       method: "POST",
@@ -178,3 +177,5 @@ export async function getUser(token) {
     console.log(error);
   }
 }
+
+export default reducer;

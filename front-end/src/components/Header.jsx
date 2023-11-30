@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logoutProfile } from "../features/login";
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
 const Header = ({ token }) => {
   const dispatch = useDispatch();
@@ -43,6 +44,10 @@ const Header = ({ token }) => {
       </div>
     </nav>
   );
+};
+
+Header.propTypes = {
+  token: PropTypes.string,
 };
 
 export default Header;

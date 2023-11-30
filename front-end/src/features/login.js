@@ -66,8 +66,6 @@ const { actions, reducer } = createSlice({
   },
 });
 
-export default reducer;
-
 export function fetchToken(email, password) {
   return async (dispatch, getState) => {
     const status = loginSelector(getState()).status;
@@ -116,3 +114,5 @@ export function logoutProfile() {
     dispatch(actions.logouting());
   };
 }
+
+export default reducer;
