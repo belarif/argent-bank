@@ -7,6 +7,7 @@ html {
 }
 
 body {
+  position: relative;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -15,6 +16,7 @@ body {
 
 .main {
   flex: 1;
+  height: 100vh;
 }
 
 .bg-dark {
@@ -49,6 +51,11 @@ body {
 
 .main-nav a.router-link-exact-active {
   color: #42b983;
+}
+
+.main-nav-items {
+  display: flex;
+  gap: 30px;
 }
 
 .main-nav-item {
@@ -165,12 +172,16 @@ body {
   color: #fff;
 }
 
-.sign-in-content {
+.sign-up-link {
+  margin-top: 1rem;
+}
+
+.sign-in-content,
+.sign-up-content {
   box-sizing: border-box;
   background-color: white;
   width: 300px;
   margin: 0 auto;
-  margin-top: 3rem;
   padding: 2rem;
 }
 
@@ -203,10 +214,15 @@ body {
 }
 
 .footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   justify-content: center;
   border-top: 2px solid #ccc;
   padding: 2rem 0 1.5rem;
+  background: white;
 }
 
 .footer-text {
@@ -259,6 +275,29 @@ body {
   padding: 10px;
 }
 
+.save-button,
+.cancel-button {
+  margin: 10px 10px 0 10px;
+  border-radius: 3px;
+  border-color: #00bc77;
+  padding: 10px;
+  color: #00bc77;
+  font-weight: bold;
+  width: 100px;
+}
+
+.edit-user-form {
+  display: none;
+  margin: 20px 0;
+}
+
+.edit-user-form input {
+  margin: 0 10px;
+  border-radius: 3px;
+  padding-left: 5px;
+  height: 40px;
+}
+
 .header {
   color: #fff;
   margin-bottom: 2rem;
@@ -274,6 +313,10 @@ body {
   border-color: #00bc77;
   background-color: #00bc77;
   color: #fff;
+}
+
+.error-message {
+  margin-top: 200px;
 }
 
 @media (min-width: 720px) {

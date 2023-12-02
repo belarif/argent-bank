@@ -1,8 +1,20 @@
 import React from "react";
 import logo from "../assets/argentBankLogo.png";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../features/login";
+import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
-const Header = () => {
+const Header = ({ token }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  function handleClick() {
+    dispatch(logout());
+    navigate("/");
+  }
+
   return (
     <nav className="main-nav">
       <Link className="main-nav-logo" to={"/"}>
@@ -13,14 +25,25 @@ const Header = () => {
         />
         <h1 className="sr-only">Argent Bank</h1>
       </Link>
-      <div>
-        <Link className="main-nav-item" to={"/login"}>
-          <i className="fa fa-user-circle"></i>
-          Sign In
-        </Link>
+      <div className="main-nav-items">
+        {token && token !== null ? (
+          <Link className="main-nav-item" onClick={handleClick}>
+            <i className="fa fa-user-circle"></i>
+            Sign Out
+          </Link>
+        ) : (
+          <Link className="main-nav-item" to="/login">
+            <i className="fa fa-user-circle"></i>
+            Sign In
+          </Link>
+        )}
       </div>
     </nav>
   );
+};
+
+Header.propTypes = {
+  token: PropTypes.string,
 };
 
 export default Header;

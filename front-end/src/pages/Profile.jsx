@@ -1,19 +1,40 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import EditForm from "../components/EditForm";
+import { loginSelector, userSelector } from "../utils/selectors";
+import { useSelector } from "react-redux";
+import { getUser } from "../features/user";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const Profile = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const token = useSelector(loginSelector).token;
+  const userProfile = useSelector(userSelector).userData;
+
+  useEffect(() => {
+    if (token === null) {
+      navigate("/login");
+    }
+
+    dispatch(getUser(token));
+  }, [dispatch, navigate, token]);
+
   return (
     <React.Fragment>
-      <Header />
+      <Header token={token} />
       <main className="main bg-dark">
         <div className="header">
-          <h1>
-            Welcome back
-            <br />
-            Tony Jarvis!
-          </h1>
-          <button className="edit-button">Edit Name</button>
+          {userProfile && (
+            <h1>
+              Welcome back
+              <br />
+              {userProfile.firstName} {userProfile.lastName}
+            </h1>
+          )}
+          <EditForm userProfile={userProfile} />
         </div>
         <h2 className="sr-only">Accounts</h2>
         <section className="account">
@@ -27,7 +48,7 @@ const Profile = () => {
           </div>
         </section>
         <section className="account">
-          <div claclassName="account-content-wrapper">
+          <div className="account-content-wrapper">
             <h3 className="account-title">Argent Bank Savings (x6712)</h3>
             <p className="account-amount">$10,928.42</p>
             <p className="account-amount-description">Available Balance</p>

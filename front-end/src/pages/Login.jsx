@@ -1,35 +1,59 @@
 import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { Link } from "react-router-dom";
+import { getToken } from "../features/login";
+import { useDispatch, useSelector } from "react-redux";
+import { loginSelector, userSelector } from "../utils/selectors";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const token = useSelector(loginSelector).token;
+  const error = useSelector(loginSelector).error;
+  const success = useSelector(userSelector).success;
+
+  useEffect(() => {
+    if (token !== null) {
+      navigate("/profile");
+    }
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(getToken(e.target.username.value, e.target.password.value));
+  };
+
   return (
     <React.Fragment>
-      <Header />
+      <Header token={token} />
       <main className="main bg-dark">
         <section className="sign-in-content">
           <i className="fa fa-user-circle sign-in-icon"></i>
           <h1>Sign In</h1>
-          <form>
+          <p style={{ color: "red" }}>{error ? error : ""}</p>
+          <p style={{ color: "green" }}>{success ? success : ""}</p>
+          <form onSubmit={handleSubmit}>
             <div className="input-wrapper">
               <label htmlFor="username">Username</label>
-              <input type="text" id="username" />
+              <input type="email" id="username" required />
             </div>
             <div className="input-wrapper">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password" required>
+                Password
+              </label>
               <input type="password" id="password" />
             </div>
             <div className="input-remember">
               <input type="checkbox" id="remember-me" />
               <label htmlFor="remember-me">Remember me</label>
             </div>
-
-            {/* PLACEHOLDER DUE TO STATIC SITE */}
-            <a href="./user.html" className="sign-in-button">
-              Sign In
-            </a>
-            {/* SHOULD BE THE BUTTON BELOW */}
-            {/* <button class="sign-in-button">Sign In</button> */}
+            <button className="sign-in-button">Sign In</button>
+            <div className="sign-up-link">
+              <Link to={"/signUp"}>Sign Up</Link>
+            </div>
           </form>
         </section>
       </main>
