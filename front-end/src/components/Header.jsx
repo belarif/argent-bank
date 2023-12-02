@@ -37,10 +37,6 @@ const Header = ({ token }) => {
             Sign In
           </Link>
         )}
-        <Link className="main-nav-item" to="/signup">
-          <i className="fa fa-user-circle"></i>
-          Sign Up
-        </Link>
       </div>
     </nav>
   );

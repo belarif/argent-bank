@@ -144,46 +144,4 @@ export function updateUser(firstName, lastName) {
   };
 }
 
-export function signupUser(email, password, firstName, lastName) {
-  return async (dispatch, getState) => {
-    const status = userSelector(getState()).status;
-
-    if (status === "pending" || status === "updating") {
-      return;
-    }
-
-    dispatch(actions.fetching());
-
-    try {
-      const req = await fetch("http://localhost:3001/api/v1/user/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-          firstName: firstName,
-          lastName: lastName,
-        }),
-      });
-
-      const res = await req.json();
-
-      if (res.status === 400) {
-        dispatch(actions.rejecting(res.message));
-      }
-
-      if (res.status === 200) {
-        dispatch(actions.resolving(res.message, res.body));
-      }
-
-      return;
-    } catch (error) {
-      console.log(error);
-      dispatch(actions.rejecting(error));
-    }
-  };
-}
-
 export default reducer;
