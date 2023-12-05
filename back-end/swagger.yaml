@@ -135,6 +135,7 @@ paths:
             $ref: "#/definitions/ResponseTransactionCreate"
         "500":
           description: Internal Server Error
+  /user/transactions/{currentMonth}:
     get:
       security:
         - Bearer: []
@@ -143,6 +144,11 @@ paths:
       summary: User Transactions API
       description: API for retrieving user transactions
       parameters:
+        - in: path
+          name: currentMonth
+          type: string
+          description: filter transactions by current month
+          required: true
         - in: header
           name: Authorization
           description: Attach Bearer JWT token
