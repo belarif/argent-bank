@@ -67,6 +67,7 @@ paths:
       description: API for fetching a user profile
       parameters:
         - in: header
+          type: string
           name: Authorization
           description: Attach Bearer JWT token
           required: true
@@ -90,6 +91,7 @@ paths:
       description: API for updating a user profile
       parameters:
         - in: header
+          type: string
           name: Authorization
           description: Attach Bearer JWT token
           required: true
@@ -110,7 +112,7 @@ paths:
           description: Invalid Fields
         "500":
           description: Internal Server Error
-  /user/transactions:
+  /users/{userId}/transactions:
     post:
       security:
         - Bearer: []
@@ -119,11 +121,18 @@ paths:
       summary: User Transactions API
       description: API for creating user transaction
       parameters:
+        - in: path
+          type: string
+          name: userId
+          description: link transaction to user
+          required: true
         - in: header
+          type: string
           name: Authorization
           description: Attach Bearer JWT token
           required: true
         - in: body
+          name: transaction data to create
           schema:
             $ref: "#/definitions/TransactionCreate"
       produces:
@@ -135,7 +144,6 @@ paths:
             $ref: "#/definitions/ResponseTransactionCreate"
         "500":
           description: Internal Server Error
-  /user/transactions/{currentMonth}:
     get:
       security:
         - Bearer: []
@@ -145,11 +153,12 @@ paths:
       description: API for retrieving user transactions
       parameters:
         - in: path
-          name: currentMonth
           type: string
-          description: filter transactions by current month
+          name: userId
+          description: get transactions linked to a user
           required: true
         - in: header
+          type: string
           name: Authorization
           description: Attach Bearer JWT token
           required: true
@@ -164,7 +173,7 @@ paths:
           description: no transaction found
         "500":
           description: Internal Server Error
-  /user/transactions/{transactionId}:
+  /users/{userId}/transactions/{transactionId}:
     get:
       security:
         - Bearer: []
@@ -174,10 +183,16 @@ paths:
       description: API for retrieving a user transaction
       parameters:
         - in: path
+          type: string
+          name: userId
+          description: get a transaction linked to a user
+          required: true
+        - in: path
           name: transactionId
           required: true
           type: integer
         - in: header
+          type: string
           name: Authorization
           description: Attach Bearer JWT token
           required: true
@@ -201,14 +216,21 @@ paths:
       description: API for updating user transactions
       parameters:
         - in: path
+          type: string
+          name: userId
+          description: update a transaction linked to a user
+          required: true
+        - in: path
           name: transactionId
           required: true
           type: integer
         - in: header
+          type: string
           name: Authorization
           description: Attach Bearer JWT token
           required: true
         - in: body
+          name: transaction data to updating
           schema:
             $ref: "#/definitions/TransactionUpdate"
       produces:
@@ -231,10 +253,16 @@ paths:
       description: API for deleting user transaction
       parameters:
         - in: path
+          type: string
+          name: userId
+          description: delete a transaction linked to a user
+          required: true
+        - in: path
           name: transactionId
           required: true
           type: integer
         - in: header
+          type: string
           name: Authorization
           description: Attach Bearer JWT token
           required: true
