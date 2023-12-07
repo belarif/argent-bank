@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { userSelector, loginSelector } from "../utils/selectors";
 
 const initialState = {
   status: "void",
@@ -71,10 +70,8 @@ const { actions, reducer } = createSlice({
   },
 });
 
-export function getUser(token) {
-  return async (dispatch, getState) => {
-    const status = userSelector(getState()).status;
-
+export function getUser(token, status) {
+  return async (dispatch) => {
     if (status === "pending" || status === "updating") {
       return;
     }
@@ -107,11 +104,8 @@ export function getUser(token) {
   };
 }
 
-export function updateUser(firstName, lastName) {
-  return async (dispatch, getState) => {
-    const token = loginSelector(getState()).token;
-    const status = userSelector(getState()).status;
-
+export function updateUser(firstName, lastName, token, status) {
+  return async (dispatch) => {
     if (status === "pending" || status === "updating") {
       return;
     }
