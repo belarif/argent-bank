@@ -112,7 +112,8 @@ paths:
           description: Invalid Fields
         "500":
           description: Internal Server Error
-  /users/{userId}/transactions:
+
+  /user/transactions:
     post:
       security:
         - Bearer: []
@@ -121,11 +122,6 @@ paths:
       summary: User Transactions API
       description: API for creating user transaction
       parameters:
-        - in: path
-          type: string
-          name: userId
-          description: link transaction to user
-          required: true
         - in: header
           type: string
           name: Authorization
@@ -134,16 +130,15 @@ paths:
         - in: body
           name: transaction data to create
           schema:
-            $ref: "#/definitions/TransactionCreate"
+            $ref: "#/definitions/Transaction"
       produces:
         - application/json
       responses:
         "201":
           description: transaction created successfully
-          schema:
-            $ref: "#/definitions/ResponseTransactionCreate"
         "500":
           description: Internal Server Error
+  /user/{accountId}/transactions:
     get:
       security:
         - Bearer: []
@@ -154,8 +149,8 @@ paths:
       parameters:
         - in: path
           type: string
-          name: userId
-          description: get transactions linked to a user
+          name: accountId
+          description: get transactions linked to an account
           required: true
         - in: header
           type: string
@@ -168,12 +163,14 @@ paths:
         "200":
           description: transactions retrieved successfully
           schema:
-            $ref: "#/definitions/ResponseTransactionsGet"
+            type: array
+            items:
+              $ref: "#/definitions/TransactionResponse"
         "404":
           description: no transaction found
         "500":
           description: Internal Server Error
-  /users/{userId}/transactions/{transactionId}:
+  /user/transactions/{transactionId}:
     get:
       security:
         - Bearer: []
@@ -182,11 +179,6 @@ paths:
       summary: User Transactions API
       description: API for retrieving a user transaction
       parameters:
-        - in: path
-          type: string
-          name: userId
-          description: get a transaction linked to a user
-          required: true
         - in: path
           name: transactionId
           required: true
@@ -202,7 +194,7 @@ paths:
         "200":
           description: transaction retrieved successfully
           schema:
-            $ref: "#/definitions/ResponseTransactionGet"
+            $ref: "#/definitions/TransactionResponse"
         "404":
           description: no transaction found
         "500":
@@ -216,11 +208,6 @@ paths:
       description: API for updating user transactions
       parameters:
         - in: path
-          type: string
-          name: userId
-          description: update a transaction linked to a user
-          required: true
-        - in: path
           name: transactionId
           required: true
           type: integer
@@ -232,14 +219,14 @@ paths:
         - in: body
           name: transaction data to updating
           schema:
-            $ref: "#/definitions/TransactionUpdate"
+            $ref: "#/definitions/Transaction"
       produces:
         - application/json
       responses:
         "201":
           description: transactions updated successfully
           schema:
-            $ref: "#/definitions/ResponseTransactionGet"
+            $ref: "#/definitions/TransactionResponse"
         "404":
           description: no transaction found
         "500":
@@ -252,11 +239,6 @@ paths:
       summary: User Transactions API
       description: API for deleting user transaction
       parameters:
-        - in: path
-          type: string
-          name: userId
-          description: delete a transaction linked to a user
-          required: true
         - in: path
           name: transactionId
           required: true
@@ -303,31 +285,6 @@ definitions:
       password:
         type: string
         description: user password
-  TransactionCreate:
-    properties:
-      amount:
-        type: number
-        description: transaction amount
-      transactionType:
-        type: string
-        description: transaction type
-      category:
-        type: string
-        description: transaction category
-      description:
-        type: string
-        description: transaction nature
-      notes:
-        type: string
-        description: transaction notes
-  TransactionUpdate:
-    properties:
-      category:
-        type: string
-        description: transaction category
-      notes:
-        type: string
-        description: transaction notes
   ApiResponse:
     type: object
     properties:
@@ -354,7 +311,25 @@ definitions:
         type: string
       lastName:
         type: string
-  ResponseTransactionGet:
+
+  Transaction:
+    properties:
+      amount:
+        type: number
+        description: transaction amount
+      transactionType:
+        type: string
+        description: transaction type
+      category:
+        type: string
+        description: transaction category
+      description:
+        type: string
+        description: transaction nature
+      notes:
+        type: string
+        description: transaction notes
+  TransactionResponse:
     type: object
     properties:
       description:
@@ -378,36 +353,3 @@ definitions:
       createdAt:
         type: string
         description: transaction creation date
-  ResponseTransactionCreate:
-    type: object
-    properties:
-      status:
-        type: integer
-      message:
-        type: string
-  ResponseTransactionsGet:
-    type: array
-    items:
-      type: object
-      properties:
-        description:
-          type: string
-          description: transaction nature
-        amount:
-          type: number
-          description: transaction amount
-        balance:
-          type: number
-          description: balance amount
-        transactionType:
-          type: string
-          description: transaction type
-        category:
-          type: string
-          description: transaction category
-        notes:
-          type: string
-          description: transaction notes
-        createdAt:
-          type: string
-          description: transaction creation date
