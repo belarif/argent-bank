@@ -70,12 +70,8 @@ const { actions, reducer } = createSlice({
   },
 });
 
-export function getUser(token, status) {
+export function getUser(token) {
   return async (dispatch) => {
-    if (status === "pending" || status === "updating") {
-      return;
-    }
-
     dispatch(actions.fetching());
 
     try {
@@ -104,11 +100,8 @@ export function getUser(token, status) {
   };
 }
 
-export function updateUser(firstName, lastName, token, status) {
+export function updateUser(firstName, lastName, token) {
   return async (dispatch) => {
-    if (status === "pending" || status === "updating") {
-      return;
-    }
     dispatch(actions.fetching());
 
     try {

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import EditForm from "../components/EditForm";
-import { selectUserData, selectToken, selectStatus } from "../utils/selectors";
+import { selectUserData, selectToken } from "../utils/selectors";
 import { useSelector } from "react-redux";
 import { getUser } from "../features/user";
 import { useNavigate } from "react-router-dom";
@@ -13,15 +13,14 @@ const Profile = () => {
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
   const userProfile = useSelector(selectUserData);
-  const status = useSelector(selectStatus);
 
   useEffect(() => {
     if (!token) {
       navigate("/login");
     }
 
-    dispatch(getUser(token, status));
-  }, [dispatch, navigate, token, status]);
+    dispatch(getUser(token));
+  }, [dispatch, navigate, token]);
 
   return (
     <React.Fragment>
