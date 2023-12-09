@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginSelector } from "../utils/selectors";
+import { selectLoginStatus } from "../utils/selectors";
 
 const initialState = {
   status: "void",
@@ -63,8 +63,8 @@ const { actions, reducer } = createSlice({
 });
 
 export function getToken(email, password) {
-  return async (dispatch, getState) => {
-    const status = loginSelector(getState()).status;
+  return async (dispatch) => {
+    const status = selectLoginStatus;
 
     if (status === "pending" || status === "updating") {
       return;
