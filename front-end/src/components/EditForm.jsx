@@ -1,8 +1,8 @@
 import React from "react";
 import { useState } from "react";
-import { updateUser } from "../features/user";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
+import { updateUser } from "../features/user";
 
 const EditForm = ({ userProfile }) => {
   const [displayed, setDisplayed] = useState(false);

@@ -1,9 +1,8 @@
 import React from "react";
-import logo from "../assets/argentBankLogo.png";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import logo from "../assets/argentBankLogo.png";
 import { logout } from "../features/login";
-import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const Header = ({ token }) => {
