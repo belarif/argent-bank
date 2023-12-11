@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { selectLoginStatus } from "../utils/selectors";
+import { getUser } from "./user";
 
 const initialState = {
   status: "void",
   token: null,
+  success: null,
   error: null,
 };
 
@@ -30,14 +32,15 @@ const { actions, reducer } = createSlice({
     },
 
     resolving: {
-      prepare: (token) => ({
-        payload: { token },
+      prepare: (success, token) => ({
+        payload: { success, token },
       }),
 
       reducer: (state, action) => {
         if (state.status === "pending" || state.status === "updating") {
           state.status = "resolved";
           state.token = action.payload.token;
+          state.success = action.payload.success;
           return;
         }
       },
@@ -85,8 +88,9 @@ export function getToken(email, password) {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        dispatch(actions.resolving(data.body.token));
+        const res = await response.json();
+        dispatch(actions.resolving(res.message, res.body.token));
+        dispatch(getUser(res.body.token));
       }
 
       if (response.status === 400) {
