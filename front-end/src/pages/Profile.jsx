@@ -1,15 +1,13 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import EditForm from "../components/EditForm";
 import { selectUserData, selectToken } from "../utils/selectors";
-import { getUser } from "../features/user";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const token = useSelector(selectToken);
   const userProfile = useSelector(selectUserData);
 
@@ -17,9 +15,7 @@ const Profile = () => {
     if (!token) {
       navigate("/login");
     }
-
-    dispatch(getUser(token));
-  }, [dispatch, navigate, token]);
+  }, [navigate, token]);
 
   return (
     <React.Fragment>

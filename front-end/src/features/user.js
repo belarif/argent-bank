@@ -2,9 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   status: "void",
-  error: null,
-  success: null,
   userData: {},
+  success: null,
+  error: null,
 };
 
 const { actions, reducer } = createSlice({
@@ -18,8 +18,8 @@ const { actions, reducer } = createSlice({
       }
 
       if (state.status === "rejected") {
-        state.error = null;
         state.status = "pending";
+        state.error = null;
         return;
       }
 
@@ -37,8 +37,8 @@ const { actions, reducer } = createSlice({
       reducer: (state, action) => {
         if (state.status === "pending" || state.status === "updating") {
           state.status = "resolved";
-          state.success = action.payload.success;
           state.userData = action.payload.userData;
+          state.success = action.payload.success;
           return;
         }
       },
@@ -60,12 +60,20 @@ const { actions, reducer } = createSlice({
       reducer: (state, action) => {
         if (state.status === "pending" || state.status === "updating") {
           state.status = "resolved";
-          state.success = action.payload.success;
           state.userData.firstName = action.payload.firstName;
           state.userData.lastName = action.payload.lastName;
+          state.success = action.payload.success;
           return;
         }
       },
+    },
+
+    resetingState: (state) => {
+      if (state.status === "resolved") {
+        state.status = initialState.status;
+        state.userData = initialState.userData;
+        state.success = initialState.success;
+      }
     },
   },
 });
@@ -131,4 +139,5 @@ export function updateUser(firstName, lastName, token) {
   };
 }
 
+export const resetUserInitialState = actions.resetingState();
 export default reducer;
