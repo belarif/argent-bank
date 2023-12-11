@@ -5,17 +5,21 @@ import { useDispatch, useSelector } from "react-redux";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { getToken } from "../features/login";
-import { loginSelector, userSelector } from "../utils/selectors";
+import {
+  selectToken,
+  selectLoginError,
+  selectUserSuccess,
+} from "../utils/selectors";
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = useSelector(loginSelector).token;
-  const error = useSelector(loginSelector).error;
-  const success = useSelector(userSelector).success;
+  const token = useSelector(selectToken);
+  const error = useSelector(selectLoginError);
+  const success = useSelector(selectUserSuccess);
 
   useEffect(() => {
-    if (token !== null) {
+    if (token) {
       navigate("/profile");
     }
   });

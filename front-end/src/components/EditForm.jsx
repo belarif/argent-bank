@@ -1,16 +1,21 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { selectToken } from "../utils/selectors";
 import PropTypes from "prop-types";
 import { updateUser } from "../features/user";
 
 const EditForm = ({ userProfile }) => {
   const [displayed, setDisplayed] = useState(false);
   const dispatch = useDispatch();
+  const token = useSelector(selectToken);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateUser(e.target.firstName.value, e.target.lastName.value));
+    dispatch(
+      updateUser(e.target.firstName.value, e.target.lastName.value, token)
+    );
     e.target.firstName.value = "";
     e.target.lastName.value = "";
   };
