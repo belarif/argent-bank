@@ -1,16 +1,15 @@
 import React from "react";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import { Link } from "react-router-dom";
-import { getToken } from "../features/login";
+import { useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+import { getToken } from "../features/login";
 import {
   selectToken,
   selectLoginError,
   selectUserSuccess,
 } from "../utils/selectors";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 const Login = () => {
   const dispatch = useDispatch();

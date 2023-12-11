@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import EditForm from "../components/EditForm";
 import { selectUserData, selectToken } from "../utils/selectors";
-import { useSelector } from "react-redux";
 import { getUser } from "../features/user";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 
 const Profile = () => {
   const navigate = useNavigate();

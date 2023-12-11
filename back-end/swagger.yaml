@@ -113,31 +113,6 @@ paths:
         "500":
           description: Internal Server Error
 
-  /user/transactions:
-    post:
-      security:
-        - Bearer: []
-      tags:
-        - User Transactions Module
-      summary: User Transactions API
-      description: API for creating user transaction
-      parameters:
-        - in: header
-          type: string
-          name: Authorization
-          description: Attach Bearer JWT token
-          required: true
-        - in: body
-          name: transaction data to create
-          schema:
-            $ref: "#/definitions/Transaction"
-      produces:
-        - application/json
-      responses:
-        "201":
-          description: transaction created successfully
-        "500":
-          description: Internal Server Error
   /user/{accountId}/transactions:
     get:
       security:
@@ -165,12 +140,12 @@ paths:
           schema:
             type: array
             items:
-              $ref: "#/definitions/TransactionResponse"
+              $ref: "#/definitions/ResponseTransaction"
         "404":
           description: no transaction found
         "500":
           description: Internal Server Error
-  /user/transactions/{transactionId}:
+  /user/{accountId}/transactions/{transactionId}:
     get:
       security:
         - Bearer: []
@@ -179,6 +154,11 @@ paths:
       summary: User Transactions API
       description: API for retrieving a user transaction
       parameters:
+        - in: path
+          type: string
+          name: accountId
+          description: get transaction linked to an account
+          required: true
         - in: path
           name: transactionId
           required: true
@@ -194,7 +174,7 @@ paths:
         "200":
           description: transaction retrieved successfully
           schema:
-            $ref: "#/definitions/TransactionResponse"
+            $ref: "#/definitions/ResponseTransaction"
         "404":
           description: no transaction found
         "500":
@@ -205,8 +185,13 @@ paths:
       tags:
         - User Transactions Module
       summary: User Transactions API
-      description: API for updating user transactions
+      description: API for updating or adding informations to transaction
       parameters:
+        - in: path
+          type: string
+          name: accountId
+          description: update transaction linked to an account
+          required: true
         - in: path
           name: transactionId
           required: true
@@ -226,7 +211,7 @@ paths:
         "201":
           description: transactions updated successfully
           schema:
-            $ref: "#/definitions/TransactionResponse"
+            $ref: "#/definitions/ResponseTransaction"
         "404":
           description: no transaction found
         "500":
@@ -239,6 +224,11 @@ paths:
       summary: User Transactions API
       description: API for deleting user transaction
       parameters:
+        - in: path
+          type: string
+          name: accountId
+          description: delete transaction linked to an account
+          required: true
         - in: path
           name: transactionId
           required: true
@@ -314,22 +304,13 @@ definitions:
 
   Transaction:
     properties:
-      amount:
-        type: number
-        description: transaction amount
-      transactionType:
-        type: string
-        description: transaction type
       category:
         type: string
         description: transaction category
-      description:
-        type: string
-        description: transaction nature
       notes:
         type: string
         description: transaction notes
-  TransactionResponse:
+  ResponseTransaction:
     type: object
     properties:
       description:
