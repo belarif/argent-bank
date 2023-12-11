@@ -67,6 +67,14 @@ const { actions, reducer } = createSlice({
         }
       },
     },
+
+    resetingState: (state) => {
+      if (state.status === "resolved") {
+        state.status = initialState.status;
+        state.userData = initialState.userData;
+        state.success = initialState.success;
+      }
+    },
   },
 });
 
@@ -131,4 +139,5 @@ export function updateUser(firstName, lastName, token) {
   };
 }
 
+export const resetUserInitialState = actions.resetingState();
 export default reducer;

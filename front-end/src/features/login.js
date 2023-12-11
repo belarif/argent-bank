@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { selectLoginStatus } from "../utils/selectors";
 import { getUser } from "./user";
+import { resetUserInitialState } from "./user";
 
 const initialState = {
   status: "void",
@@ -55,10 +56,11 @@ const { actions, reducer } = createSlice({
       }
     },
 
-    logouting: (state) => {
+    resetingState: (state) => {
       if (state.status === "resolved") {
         state.status = initialState.status;
         state.token = initialState.token;
+        state.success = initialState.success;
         state.error = initialState.error;
       }
     },
@@ -111,7 +113,8 @@ export function getToken(email, password) {
 
 export function logout() {
   return async (dispatch) => {
-    dispatch(actions.logouting());
+    dispatch(actions.resetingState());
+    dispatch(resetUserInitialState);
   };
 }
 

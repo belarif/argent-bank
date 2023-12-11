@@ -11,7 +11,7 @@ const Header = ({ token }) => {
 
   function handleClick() {
     dispatch(logout());
-    navigate("/");
+    navigate("/login");
   }
 
   return (
