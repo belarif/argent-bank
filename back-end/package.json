@@ -23,7 +23,6 @@
   "scripts": {
     "populate-db": "node ./server/scripts/populateDatabase.js",
     "start": "node ./server/server.js",
-    "build": "react-scripts build",
     "dev": "react-scripts start"
   },
   "devDependencies": {
