@@ -23,6 +23,7 @@
   "scripts": {
     "populate-db": "node ./server/scripts/populateDatabase.js",
     "start": "node ./server/server.js",
+    "vercel-build": "npm run build",
     "dev": "react-scripts start"
   },
   "devDependencies": {
