@@ -15,6 +15,7 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.21",
+    "react-scripts": "^5.0.1",
     "simple-update-notifier": "^2.0.0",
     "swagger-ui-express": "^4.1.4",
     "yamljs": "^0.3.0"
