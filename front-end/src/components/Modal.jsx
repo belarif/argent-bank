@@ -23,6 +23,7 @@ const Modal = () => {
               <li>Html5</li>
               <li>Css3</li>
               <li>React</li>
+              <li>VsCode</li>
               <li>Postman</li>
               <li>API-rest</li>
               <li>Swagger-ui</li>
