@@ -34,5 +34,11 @@ app.get("/", (req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server listening on http://localhost:${PORT}`);
+  console.log(
+    `Server listening on https://argent-bank-back-end.vercel.app : ${PORT}`
+  );
+});
+
+app.use((req, res, next) => {
+  res.status(404).send("Sorry, we could not find that!");
 });
