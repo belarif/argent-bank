@@ -5,9 +5,12 @@ const Modal = () => {
 
   return (
     <React.Fragment>
-      <div class="modal" style={opened === false ? { display: "none" } : {}}>
-        <div class="modal-content">
-          <div class="modal-btn">
+      <div
+        className="modal"
+        style={opened === false ? { display: "none" } : {}}
+      >
+        <div className="modal-content">
+          <div className="modal-btn">
             <button
               id="close-modal"
               onClick={() => {
@@ -17,7 +20,7 @@ const Modal = () => {
               fermer
             </button>
           </div>
-          <div class="tech-infos">
+          <div className="tech-infos">
             <h2>Pour cette réalisation, j'ai utilisé :</h2>
             <ul>
               <li>Html5</li>
