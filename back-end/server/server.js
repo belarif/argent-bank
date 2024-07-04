@@ -28,17 +28,11 @@ app.use("/api/v1/user", require("./routes/userRoutes"));
 if (process.env.NODE_ENV !== "production") {
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 }
-//
+
 app.get("/", (req, res, next) => {
   res.send("Hello from my Express server v2!");
 });
 
 app.listen(PORT, () => {
-  console.log(
-    `Server listening on https://argent-bank-back-end.vercel.app : ${PORT}`
-  );
-});
-
-app.use((req, res, next) => {
-  res.status(404).send("Sorry, we could not find that!");
+  console.log(`Server listening on http://localhost:${PORT}`);
 });
