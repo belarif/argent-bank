@@ -79,7 +79,7 @@ export function getToken(email, password) {
 
     try {
       const response = await fetch(
-        "https://argent-bank-back-end.vercel.app/api/v1/user/login",
+        "http://argent-bank-back-end.vercel.app/api/v1/user/login",
         {
           method: "POST",
           headers: {

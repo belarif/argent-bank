@@ -7,7 +7,7 @@ info:
 host: argent-bank-back-end.vercel.app
 basePath: /api/v1
 schemes:
-  - https
+  - http
 paths:
   /user/login:
     post:
