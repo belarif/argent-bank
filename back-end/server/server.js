@@ -29,6 +29,20 @@ if (process.env.NODE_ENV !== "production") {
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 }
 
+app.use((req, res, next) => {
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://argent-bank-front-end-pi.vercel.app"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  next();
+});
+
 app.get("/", (req, res, next) => {
   res.send("Hello from my Express server v2!");
 });
