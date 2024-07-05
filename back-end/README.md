@@ -33,7 +33,7 @@ mongo --version
 npm install
 
 # Start local dev server
-npm run dev:server
+npm start
 
 # Populate database with two users
 npm run populate-db
