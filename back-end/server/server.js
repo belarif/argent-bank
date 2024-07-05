@@ -5,7 +5,9 @@ const swaggerUi = require("swagger-ui-express");
 const yaml = require("yamljs");
 const path = require("path");
 
-const swaggerDocs = yaml.load(path.join(__dirname, "swagger.yaml"));
+const swaggerDocs = yaml.load(
+  path.join(__dirname, "..", "public", "swagger.yaml")
+);
 const dbConnection = require("./database/connection");
 
 dotEnv.config();

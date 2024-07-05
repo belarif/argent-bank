@@ -10,6 +10,7 @@
     {
       "src": "/(.*)",
       "dest": "server/server.js"
-    }
+    },
+    { "src": "/swagger.yaml", "dest": "/public/swagger.yaml" }
   ]
 }
