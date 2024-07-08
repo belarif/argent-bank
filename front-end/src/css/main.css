@@ -19,6 +19,41 @@ body {
   height: 100vh;
 }
 
+.modal {
+  position: absolute;
+  top: 14%;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.modal-btn {
+  text-align: right;
+}
+
+.modal-btn button {
+  width: auto;
+}
+
+.tech-infos {
+  text-align: center;
+}
+
+.tech-infos li {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #00bc77;
+}
+
+.modal-content {
+  padding: 20px;
+  width: 600px;
+  height: auto;
+  background-color: beige;
+}
+
 .bg-dark {
   background-color: #12002b;
 }

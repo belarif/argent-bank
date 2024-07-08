@@ -29,7 +29,7 @@
 ### Lancement de l'application
 
 1. backend :
-   `npm run:dev server`
+   `npm start`
 
 2. frontend
    `npm start`

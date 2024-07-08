@@ -4,10 +4,10 @@ info:
   description: Contains all available API endpoints in this codebase
   version: "1.0.0"
   termsOfService: "http://swagger.io/terms/"
-host: localhost:3001
+host: argent-bank-back-end.vercel.app
 basePath: /api/v1
 schemes:
-  - http
+  - https
 paths:
   /user/login:
     post:

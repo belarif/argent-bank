@@ -5,12 +5,14 @@ import Footer from "../components/Footer";
 import iconChat from "../assets/icons/icon-chat.png";
 import iconMoney from "../assets/icons/icon-money.png";
 import iconSecurity from "../assets/icons/icon-security.png";
+import Modal from "../components/Modal";
 
 const Home = () => {
   return (
     <React.Fragment>
       <Header />
       <main>
+        <Modal />
         <div className="hero">
           <section className="hero-content">
             <h2 className="sr-only">Promoted Content</h2>
